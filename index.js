@@ -59,4 +59,4 @@ class PageRenderer{
     }
 }
 
-export default PageRenderer;
+module.exports = PageRenderer;
