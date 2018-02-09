@@ -9,6 +9,6 @@
   "author": "Saurabh Gupta",
   "license": "ISC",
   "dependencies": {
-    "pagerenderer": ""
+    "pagerenderer": "git+https://github.com/saurabhg22/PageRenderer.git"
   }
 }
