@@ -1,6 +1,6 @@
-const pagerenderer = require("pagerenderer");
+const Pagerenderer = require("pagerenderer");
 
-pagerenderer([
+pagerenderer = new Pagerenderer([
     {
         "hostBot":"localhost:3007",
         "hostClient":"http://localhost:3004"
