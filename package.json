@@ -1,0 +1,17 @@
+{
+  "name": "bundlrr-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Saurabh Gupta",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "puppeteer": "^1.0.0",
+    "useragent": "^2.3.0"
+  }
+}
