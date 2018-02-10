@@ -37,7 +37,7 @@ pageRenderer.start();
 
 ```
 
-- Now you just have to redirect all the requests comming from bots to http://example.bot.com
+- Now you just have to redirect all the requests comming from bots to http://example.com to http://example.bot.com, to http://anotherexample.com to http://anotherexample.bot.com and so on.
 
 
        
