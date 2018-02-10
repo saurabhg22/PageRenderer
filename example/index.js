@@ -1,10 +1,6 @@
 const Pagerenderer = require("pagerenderer");
+const config = require('./config.json');
 
-pagerenderer = new Pagerenderer({port:3007, sites:[
-    {
-        "hostBot":"localhost:3007",
-        "hostClient":"http://localhost:3004"
-    }
-]});
+pagerenderer = new Pagerenderer(config);
 
 pagerenderer.start();

@@ -13,12 +13,19 @@
 
 ```js
 #!/usr/bin/env node
-pageRenderer.init([
-	{
-        "hostBot":"http://example.bot.com",
-        "hostClient":"http://example.com"
-    }
-]);
+pageRenderer.init({
+    "port":3007, // port on which the pagerenderer must run default is 3007
+    "sites":[
+        {
+            "hostBot":"http://example.bot.com",
+            "hostClient":"http://example.com"
+        },
+        {
+            "hostBot":"http://anotherexample.bot.com",
+            "hostClient":"http://anotherexample.com"
+        }
+    ]
+});
 
 ```
 

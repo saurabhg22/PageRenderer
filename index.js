@@ -6,12 +6,12 @@ const ua = require("useragent");
 
 class PageRenderer{
     constructor(config){
-        this.config = config
+        this.config = config || {}
     }
 
     start(){
-        const port = this.config.port;
-        const sites = this.config.sites;
+        const port = this.config.port || 3007;
+        const sites = this.config.sites || [];
         app.get('*', async (req, res) => {
             try {
                 puppeteer.launch({headless: true, args: ['--no-sandbox']}).then(async browser => {
