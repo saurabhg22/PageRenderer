@@ -29,6 +29,14 @@ pageRenderer.init({
 
 ```
 
+- Then just call the start function of pagerenderer to start the service.
+
+```js
+#!/usr/bin/env node
+pageRenderer.start();
+
+```
+
 - Now you just have to redirect all the requests comming from bots to http://example.bot.com
 
 
