@@ -29,8 +29,8 @@ class PageRenderer{
             else{
                 local_url = sites[indexOfClient].hostClient + req.originalUrl;
             }
-            // Static files do not require a browser to render.
-            if(/.*\.(js|css|img|jpg|jpeg|png|gif)$/.test(local_url)){
+            // JS and CSS files do not require a browser to render.
+            if(/.*\.(js|css)$/.test(local_url)){
                 let resoonse = await axios.request({
                     url: local_url
                 });
