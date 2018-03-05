@@ -73,5 +73,4 @@ class PageRenderer{
         });
     }
 }
-
 module.exports = PageRenderer;
