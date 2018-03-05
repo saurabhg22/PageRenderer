@@ -3,7 +3,7 @@
     "sites":[
         {
             "hostBot":"localhost:3007",
-            "hostClient":"http://localhost:3001"
+            "hostClient":"http://localhost:3000"
         },
         {
             "hostBot":"makegstinvoice.com",

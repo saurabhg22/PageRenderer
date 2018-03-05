@@ -10,14 +10,14 @@ class PageRenderer{
         this.config = config || {};
     }
 
-    start(verbose = 0){
+    start(verbose){
         const port = this.config.port || 3007;
         const sites = this.config.sites || [];
         app.get('*', async (req, res) => {
             let local_url;
             let indexOfClient = -1;
             if(verbose === 1){
-                console.log(req.headers);
+                console.log(req.headers, req.originalUrl);
             }
             sites.forEach((element, i) => {
                 if(req.headers.host === element.hostBot){
@@ -37,13 +37,13 @@ class PageRenderer{
                 console.log("local_url: ", local_url);
             }
             if(/.*\.(js|css)$/.test(local_url)){
-                let resoonse = await axios.request({
+                let response = await axios.request({
                     url: local_url
                 });
                 if(verbose === 1){
                     console.log("static_file: ",local_url);
                 }
-                res.send(JSON.stringify(resoonse.data));
+                res.send(JSON.stringify(response.data));
             }
             else{
                 if(verbose === 1){
