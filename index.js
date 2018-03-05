@@ -10,12 +10,15 @@ class PageRenderer{
         this.config = config || {};
     }
 
-    start(){
+    start(verbose = 0){
         const port = this.config.port || 3007;
         const sites = this.config.sites || [];
         app.get('*', async (req, res) => {
             let local_url;
             let indexOfClient = -1;
+            if(verbose === 1){
+                console.log(req.headers);
+            }
             sites.forEach((element, i) => {
                 if(req.headers.host === element.hostBot){
                     indexOfClient = i;
