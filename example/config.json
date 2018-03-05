@@ -3,11 +3,7 @@
     "sites":[
         {
             "hostBot":"localhost:3007",
-            "hostClient":"http://localhost:3001"
-        },
-        {
-            "hostBot":"bundler.com",
-            "hostClient":"http://localhost:3004"
+            "hostClient":"http://localhost:3000"
         }
     ]
 }
