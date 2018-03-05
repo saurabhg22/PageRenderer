@@ -33,13 +33,22 @@ class PageRenderer{
                 local_url = sites[indexOfClient].hostClient + req.originalUrl;
             }
             // JS and CSS files do not require a browser to render.
+            if(verbose === 1){
+                console.log("local_url: ", local_url);
+            }
             if(/.*\.(js|css)$/.test(local_url)){
                 let resoonse = await axios.request({
                     url: local_url
                 });
+                if(verbose === 1){
+                    console.log("static_file: ",local_url);
+                }
                 res.send(JSON.stringify(resoonse.data));
             }
             else{
+                if(verbose === 1){
+                    console.log("html_file: ",local_url);
+                }
                 try {
                     puppeteer.launch({headless: true, args: ['--no-sandbox']}).then(async browser => {
                         const page = await browser.newPage();
