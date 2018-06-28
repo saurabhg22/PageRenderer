@@ -10,9 +10,9 @@
   "author": "Saurabh Gupta",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.1",
     "express": "^4.16.2",
     "puppeteer": "^1.0.0",
-    "useragent": "^2.3.0",
-    "axios": "^0.17.1"
+    "redis": "^2.8.0"
   }
 }
