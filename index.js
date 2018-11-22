@@ -27,6 +27,9 @@ class PageRenderer {
             if (indexOfClient === -1) {
                 console.log(req.headers.host + " is not provided in the config. Assuming clientHost to be same.");
                 local_url = req.protocol + '://' + req.headers.host + req.originalUrl;
+                if(req.headers.host === `0.0.0.0:${port}` || req.headers.host === `127.0.0.1:${port}` || req.headers.host === `localhost:${port}`){
+                   return res.send({status:404});
+                }
             }
             else {
                 local_url = sites[indexOfClient].hostClient + req.originalUrl;
