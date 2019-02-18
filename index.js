@@ -16,6 +16,7 @@ class PageRenderer {
         const sites = this.config.sites || [];
         app.get('*', async (req, res) => {
             let local_url;
+            console.log(req.headers, req.orignalUrl);
             let indexOfClient = -1;
             sites.forEach((element, i) => {
                 if (req.headers.host === element.hostBot) {
@@ -24,18 +25,17 @@ class PageRenderer {
                 }
             });
             if (indexOfClient === -1) {
-                console.log(req.headers.host + " is not provided in the config. Assuming clientHost to be same.");
-                local_url = req.protocol + '://' + req.headers.host + req.originalUrl;
+                return res.send({status:404});
             }
             else {
                 local_url = sites[indexOfClient].hostClient + req.originalUrl;
             }
             // JS and CSS files do not require a browser to render.
             if (/.*\.(js|css)$/.test(local_url)) {
-                let resoonse = await axios.request({
+                let response = await axios.request({
                     url: local_url
                 });
-                res.send(JSON.stringify(resoonse.data));
+                res.send(response.data);
             }
             else {
 
@@ -94,3 +94,4 @@ class PageRenderer {
     }
 }
 module.exports = PageRenderer;
+                                                                       
