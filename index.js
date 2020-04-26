@@ -6,6 +6,12 @@ const redis = require("redis");
 const redisClient = redis.createClient();
 
 
+const removeRegexSlashes=(string)=>{
+    if(string.indexOf('/')===0 && (string.lastIndexOf('/')===string.length - 1)){
+        return string.substring(1,string.length - 1)
+    }
+    return string
+}
 class PageRenderer {
     constructor(config) {
         this.config = config || {};
@@ -14,6 +20,8 @@ class PageRenderer {
     start() {
         const port = this.config.port || 3007;
         const sites = this.config.sites || [];
+        let regexPattern;
+        let regexMatches;
         app.get('*', async (req, res) => {
             let local_url;
             console.log(req.headers, req.orignalUrl);
@@ -23,12 +31,36 @@ class PageRenderer {
                     indexOfClient = i;
                     return false;
                 }
+                else{
+                    
+                    const regexString = removeRegexSlashes(element.hostBot);
+                    console.log("regexString",regexString)
+                    // const regexObj = new RegExp(regexString);
+                    regexMatches = req.headers.host.match(regexString)
+                    console.log("regexMatches",regexMatches)
+                    if(regexMatches.length>1){
+                        regexPattern=element.hostBot
+                        indexOfClient = i;
+                    }
+                    console.log("indexOfClient",indexOfClient)
+                    regexMatches = undefined;
+                }
             });
             if (indexOfClient === -1) {
                 return res.send({status:404});
             }
             else {
-                local_url = sites[indexOfClient].hostClient + req.originalUrl;
+                let hostClient = sites[indexOfClient].hostClient;
+                // const replaceGroups = hostClient.match(/(\$[0-9])/g);
+                
+                if(regexMatches && regexMatches.length !== 0){
+                    for(let i=1; i < regexMatches.length; i++){
+                        hostClient=hostClient.replace(`$${i}`,regexMatches[i])
+                    }
+                    
+                }
+                local_url = hostClient + req.originalUrl;
+                console.log("localUrl",local_url)
             }
             // JS and CSS files do not require a browser to render.
             if (/.*\.(js|css)$/.test(local_url)) {
@@ -63,12 +95,13 @@ class PageRenderer {
                                     }));
                                 });
                                 browser.close();
+                                const siteExpiry=sites[indexOfClient] || 604800;
                                 if (html[0] === '<') {// Wrapping all html docs into HTML tags.
-                                    redisClient.set(local_url, `<html>${html}</html>`, 'EX', 60 * 60 * 24 * 7);
+                                    redisClient.set(local_url, `<html>${html}</html>`, 'EX', siteExpiry);
                                     res.send(`<html>${html}</html>`);
                                 }
                                 else {
-                                    redisClient.set(local_url, html, 'EX', 60 * 60 * 24 * 7);
+                                    redisClient.set(local_url, html, 'EX', siteExpiry);
                                     res.send(html);
                                 }
                             }).catch(e => {
