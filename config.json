@@ -1,9 +1,15 @@
 {
-    "port":3007, 
-    "sites":[
+    "port": 3007,
+    "sites": [
         {
-            "hostBot":"localhost:3007",
-            "hostClient":"http://localhost:3000"
+            "hostBot": "localhost:3007",
+            "hostClient": "http://localhost:3000",
+            "expiry": 604800
+        },
+        {
+            "hostBot": "beta(.*)",
+            "hostClient": "https://beta.$1.com",
+            "expiry": 604800
         }
     ]
 }
