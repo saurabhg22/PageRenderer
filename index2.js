@@ -6,12 +6,6 @@ const redis = require("redis");
 const redisClient = redis.createClient();
 
 
-const removeRegexSlashes=(string)=>{
-    if(string.indexOf('/')===0 && (string.lastIndexOf('/')===string.length - 1)){
-        return string.substring(1,string.length - 1)
-    }
-    return string
-}
 class PageRenderer {
     constructor(config) {
         this.config = config || {};
@@ -21,44 +15,21 @@ class PageRenderer {
         const port = this.config.port || 3007;
         const sites = this.config.sites || [];
         app.get('*', async (req, res) => {
-            let regexMatches=[];
-
             let local_url;
+            console.log(req.headers, req.orignalUrl);
             let indexOfClient = -1;
-            let found=false;
-            let invalidate=false;
-	        console.log("host", req.headers.host);
             sites.forEach((element, i) => {
-                if(!found){
-                    const regexString = removeRegexSlashes(element.hostBot);
-                    regexMatches =  req.headers.host.match(regexString) || [];
-                    
-                    if ((req.headers.host === element.hostBot) || (regexMatches[0]===req.headers.host)) {
-                        indexOfClient = i;
-                        found=true;
-                        invalidate=!!req.get('Invalidate-Cache')
-                        return false;
-                    }
+                if (req.headers.host === element.hostBot) {
+                    indexOfClient = i;
+                    return false;
                 }
-                
             });
-            found=false;
             if (indexOfClient === -1) {
                 return res.send({status:404});
             }
             else {
-                let hostClient = sites[indexOfClient].hostClient;
-
-                // const replaceGroups = hostClient.match(/(\$[0-9])/g);
-                if(regexMatches && regexMatches.length > 0){
-                    for(let i=1; i < regexMatches.length; i++){
-                        hostClient=hostClient.replace(`$${i}`,regexMatches[i])
-                    }
-                    
-                }
-                local_url = hostClient + req.originalUrl;
-		    console.log(local_url)
-            }
+                local_url = sites[indexOfClient].hostClient + req.originalUrl;
+	    }
             // JS and CSS files do not require a browser to render.
             if (/.*\.(js|css)$/.test(local_url)) {
                 let response = await axios.request({
@@ -69,7 +40,7 @@ class PageRenderer {
             else {
 
                 redisClient.exists(local_url, (err, doesExists) => {
-                    if (doesExists && !invalidate) {
+                    if (doesExists) {
                         redisClient.get(local_url, (err, page) => {
                             res.send(page);
                         });
@@ -92,13 +63,12 @@ class PageRenderer {
                                     }));
                                 });
                                 browser.close();
-                                const siteExpiry=sites[indexOfClient].expiry || 604800;
                                 if (html[0] === '<') {// Wrapping all html docs into HTML tags.
-                                    redisClient.set(local_url, `<html>${html}</html>`, 'EX', siteExpiry);
+                                    redisClient.set(local_url, `<html>${html}</html>`, 'EX', 60 * 60 * 24 * 7);
                                     res.send(`<html>${html}</html>`);
                                 }
                                 else {
-                                    redisClient.set(local_url, html, 'EX', siteExpiry);
+                                    redisClient.set(local_url, html, 'EX', 60 * 60 * 24 * 7);
                                     res.send(html);
                                 }
                             }).catch(e => {
@@ -122,8 +92,6 @@ class PageRenderer {
             console.log(`Page Renderer is running at port ${port}`);
         });
     }
-    
 }
 module.exports = PageRenderer;
                                                                        
-
