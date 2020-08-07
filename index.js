@@ -48,7 +48,6 @@ class PageRenderer {
             }
             else {
                 let hostClient = sites[indexOfClient].hostClient;
-
                 // const replaceGroups = hostClient.match(/(\$[0-9])/g);
                 if(regexMatches && regexMatches.length > 0){
                     for(let i=1; i < regexMatches.length; i++){
@@ -57,7 +56,7 @@ class PageRenderer {
                     
                 }
                 local_url = hostClient + req.originalUrl;
-		    console.log(local_url)
+		        console.log(local_url)
             }
             // JS and CSS files do not require a browser to render.
             if (/.*\.(js|css)$/.test(local_url)) {
