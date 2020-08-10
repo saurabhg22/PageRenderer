@@ -2,14 +2,32 @@
     "port": 3007,
     "sites": [
         {
-            "hostBot": "localhost:3007",
-            "hostClient": "http://localhost:3000",
-            "expiry": 604800
+            "hostBot": "shweb",
+            "hostClient": "https://shopholix.com"
         },
         {
-            "hostBot": "beta(.*)",
-            "hostClient": "https://beta.$1.com",
-            "expiry": 604800
+            "hostBot": "realicityweb",
+            "hostClient": "https://beta.realicity.com"
+        },
+        {
+            "hostBot": "/beta(.*)/",
+            "hostClient": "https://beta.$1.com"
+        },
+        {
+            "hostBot": "ltd",
+            "hostClient": "https://www.legal-tools.org"
+        },
+        {
+            "hostBot": "(.*)\\.venzi\\.ai",
+            "hostClient": "https://$1.venzi.ai"
+        },
+        {
+            "hostBot": "event\\-(.*)\\-staging\\.mithyalabs\\.com",
+            "hostClient": "https://event-$1-staging.mithyalabs.com"
+        },
+        {
+            "hostBot": "event\\-(.*)\\-dev\\.mithyalabs\\.com",
+            "hostClient": "https://event-$1-dev.mithyalabs.com"
         }
     ]
 }
